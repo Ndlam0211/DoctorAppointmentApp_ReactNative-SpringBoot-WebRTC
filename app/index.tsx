@@ -1,11 +1,9 @@
 import { Image, ImageBackground, StyleSheet, Text, View } from 'react-native'
 import React from 'react'
-import { useNavigation } from '@react-navigation/native';
 import Button from '@/components/button/Button';
 import { router } from 'expo-router';
 
 export default function Index() {
-  const {navigate} = useNavigation();
   return (
     <View style={{ flex: 1 }}>
       <ImageBackground
