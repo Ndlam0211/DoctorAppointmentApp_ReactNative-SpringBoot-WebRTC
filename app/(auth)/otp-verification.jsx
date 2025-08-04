@@ -1,14 +1,14 @@
 import { StyleSheet, Text, View } from 'react-native'
 import React, { useCallback, useEffect, useState } from 'react'
 import { OtpInput } from 'react-native-otp-entry';
-import { useLocalSearchParams } from 'expo-router';
+import { router, useLocalSearchParams } from 'expo-router';
 import Button from "@/components/button/Button";
 
 const OtpVerification = () => {
     const { mobileNumber } = useLocalSearchParams();
     const [counter, setCounter] = useState(30);
 
-    const countDown = useCallback((text) => {
+    const countDown = useCallback(() => {
         if(counter>0){
             setCounter(counter=>counter-1);
         }
@@ -23,8 +23,8 @@ const OtpVerification = () => {
 
     },[]);
 
-    const onOTPFilled = useCallback((text) => {
-        console.log("received:", text);
+    const onOTPFilled = useCallback(() => {
+        router.push("/home");
     },[]);
 
   return (
