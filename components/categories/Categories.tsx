@@ -43,7 +43,7 @@ const Categories: React.FC<Props> = ({ onChangeCategory }) => {
           isSelected && { backgroundColor: COLORS.PRIMARY },
         ]}
       >
-        <Text style={isSelected ? { backgroundColor: COLORS.SECONDARY } : null}>
+        <Text style={isSelected ? { color: COLORS.SECONDARY } : null}>
           {name}
         </Text>
       </TouchableOpacity>

@@ -15,7 +15,7 @@ const Search = () => {
       </View>
 
       <View style={styles.subContainer}>
-        <Text>Recetn Searches</Text>
+        <Text>Recent Searches</Text>
         <TouchableOpacity style={styles.clearButton}><Text style={styles.clearText}>Clear</Text></TouchableOpacity>
       </View>
       {/* List of recent searches */}
@@ -31,20 +31,18 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.SECONDARY,
   },
   searchContainer: {
-    backgroundColor: COLORS.PRIMARY,
-    height: 65,
+    height: 90,
     alignItems: "center",
+    backgroundColor: COLORS.PRIMARY,
   },
   subContainer: {
+    padding: 10,
     flexDirection: "row",
     justifyContent: "space-between",
-    padding: 10,
   },
-  clearButton: {
-
-  },
+  clearButton: {},
   clearText: {
     color: COLORS.PRIMARY,
-    fontWeight: "bold"
-  }
+    fontWeight: "bold",
+  },
 });

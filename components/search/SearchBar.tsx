@@ -28,7 +28,8 @@ const styles = StyleSheet.create({
         margin: 10,
         height: 48,
         width: "95%",
-        alignItems: "center"
+        alignItems: "center",
+        marginTop: 35
     },
     backButton: {
       paddingHorizontal: 10
