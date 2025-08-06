@@ -7,6 +7,7 @@ import Button from '@/components/button/Button';
 import DoctorCard from '@/components/doctors/DoctorCard';
 import { doctorMetrics } from '@/constants/DoctorMetrics';
 import { COLORS } from '@/constants/Colors';
+import BackHeader from '@/components/header/BackHeader';
 
 const DoctorDetail = () => {
     const {doctorId} = useLocalSearchParams();
@@ -18,12 +19,7 @@ const DoctorDetail = () => {
   return (
     <View style={{ flex: 1 }}>
       <ScrollView style={styles.container}>
-        <TouchableOpacity style={styles.header} onPress={router.back}>
-          <Button onPress={router.back} style={{ paddingRight: 10 }}>
-            <Image source={require("@/assets/images/back.png")} />
-          </Button>
-          <Text>Back</Text>
-        </TouchableOpacity>
+        <BackHeader />
         <View>
           <DoctorCard
             {...data}
@@ -38,6 +34,7 @@ const DoctorDetail = () => {
             flexWrap: "wrap",
             justifyContent: "space-between",
             paddingVertical: 10,
+            marginTop:20
           }}
         >
           {doctorMetrics.map((item, i) => (
@@ -60,9 +57,10 @@ const DoctorDetail = () => {
         </Text>
       </ScrollView>
       <View
-        style={{ position: "absolute", bottom: 0, width: "100%", padding: 10 }}
+        style={{ position: "absolute", bottom: 10, width: "100%", padding: 10 }}
       >
         <Button
+          onPress={() => router.push({ pathname: "/appointment" , params:{doctorId:doctorId}})}
           style={{ backgroundColor: COLORS.PRIMARY }}
           label="Book an Appointment"
         />
@@ -78,15 +76,6 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "white",
     padding: 20,
-  },
-  header: {
-    flexDirection: "row",
-    backgroundColor: "white",
-    alignItems:'center',
-    color: COLORS.PRIMARY,
-    height: 60,
-    width:'20%',
-    paddingTop: 15,
   },
   imageContainer: {
     borderRadius: "50%",

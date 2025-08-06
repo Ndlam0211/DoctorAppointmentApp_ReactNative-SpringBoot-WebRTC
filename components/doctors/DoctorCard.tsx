@@ -13,15 +13,17 @@ interface DoctorCardProps {
   style?: ViewStyle;
   imageStyle?: ViewStyle;
   displayAll?: boolean;
+  contentStyle?: ViewStyle;
 }
 
 const cardGap = 16;
 const cardWidth = (Dimensions.get('window').width - cardGap * 3)/2;
 
-const DoctorCard:React.FC<DoctorCardProps> = ({id,name,image,speciality,horizontal,style,imageStyle,displayAll, ...props}) => {
+const DoctorCard:React.FC<DoctorCardProps> = ({id,name,image,speciality,horizontal,style,imageStyle,displayAll,contentStyle, ...props}) => {
     const { data } = useQuery({
       queryKey: ["specialities"],
       queryFn: () => fetchSpecialityById(speciality as string),
+      enabled: !!speciality,
     });
 
   return (
@@ -36,23 +38,23 @@ const DoctorCard:React.FC<DoctorCardProps> = ({id,name,image,speciality,horizont
         style={[styles.image, !horizontal ? { height: 220 } : {}, imageStyle]}
       />
       <View
-        style={{
+        style={[{
           flexDirection: "row",
           justifyContent: "space-between",
           flexWrap: "wrap",
           padding: 5,
-        }}
+        },contentStyle]}
       >
         <Text style={styles.nameText}>{name}</Text>
         <View style={{ flexDirection: "row", flexWrap: "wrap", gap: displayAll?8:2 }}>
           <Image source={require("@/assets/images/star.png")} />
           <Text>{props?.rating}</Text>
         </View>
-      </View>
-      <View style={{ flexDirection: "row", padding: 5 }}>
-        {displayAll && <Text style={{color:'gray',fontSize:16}}>{data?.title}</Text>}
-        {!displayAll && <Text>Fee </Text>}
-        {!displayAll && <Text style={{ fontWeight: "500" }}>${props?.fee}</Text>}
+        <View style={{ flexDirection: "row", paddingVertical:5,position:'absolute', top:25, left:5}}>
+          {displayAll && <Text style={{color:'gray',fontSize:16}}>{data?.title}</Text>}
+          {!displayAll && <Text>Fee </Text>}
+          {!displayAll && <Text style={{ fontWeight: "500" }}>${props?.fee}</Text>}
+        </View>
       </View>
     </TouchableOpacity>
   );

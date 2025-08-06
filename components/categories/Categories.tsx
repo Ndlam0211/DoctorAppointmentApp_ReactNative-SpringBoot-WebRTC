@@ -14,8 +14,8 @@ interface Props {
 }
 
 interface Symptom {
-  name: string;
-  description: string;
+  name?: string;
+  description?: string;
 }
 
 const Categories: React.FC<Props> = ({ onChangeCategory }) => {
