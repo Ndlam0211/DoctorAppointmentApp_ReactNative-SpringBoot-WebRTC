@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View } from 'react-native'
+import { ScrollView, StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 import Header from '@/components/header/Header';
 import Categories from '@/components/categories/Categories';
@@ -9,14 +9,15 @@ import { useSelector } from 'react-redux';
 
 const Home = () => {
   const appointments = useSelector((state) => state.appointment.appointments);
+  console.log(appointments);
   
   return (
-    <View style={{flex:1, backgroundColor:'white'}}>
+    <ScrollView style={{flex:1, backgroundColor:'white'}}>
         <Header/>
         <Categories />
         <SectionHeader title={'Top Doctors'} onPress={()=>router.push('/doctors')}/>
         <DoctorsList horizontal/>
-    </View>
+    </ScrollView>
   )
 }
 

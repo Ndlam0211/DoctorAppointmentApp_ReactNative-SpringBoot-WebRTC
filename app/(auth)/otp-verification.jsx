@@ -24,7 +24,7 @@ const OtpVerification = () => {
     },[]);
 
     const onOTPFilled = useCallback(() => {
-        router.push("/home");
+        router.push("/bottom-tab");
     },[]);
 
   return (

@@ -60,7 +60,7 @@ const DoctorDetail = () => {
         style={{ position: "absolute", bottom: 10, width: "100%", padding: 10 }}
       >
         <Button
-          onPress={() => router.push({ pathname: "/appointment" , params:{doctorId:doctorId}})}
+          onPress={() => router.push({ pathname: "/book-appointment" , params:{doctorId:doctorId}})}
           style={{ backgroundColor: COLORS.PRIMARY }}
           label="Book an Appointment"
         />

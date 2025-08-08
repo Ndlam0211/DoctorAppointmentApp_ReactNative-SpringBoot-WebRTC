@@ -64,17 +64,17 @@ export default DoctorCard
 
 const styles = StyleSheet.create({
     container:{
-        flex:1,
         width: cardWidth,
+        height:'100%'
     },
     image: {
         borderTopLeftRadius:10,
         borderTopRightRadius:10,
         width: '100%',
-        height:"48%"
+        height:140
     },
     nameText: {
         fontSize:16,
-        fontWeight:'500'
+        fontWeight:'500',
     }
 })

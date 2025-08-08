@@ -37,7 +37,7 @@ export default Header
 
 const styles = StyleSheet.create({
   container: {
-    height: "25%",
+    height: 200,
   },
   profile: {
     padding: 20,
