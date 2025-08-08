@@ -28,7 +28,7 @@ const DoctorsList = ({horizontal}:any) => {
             contentContainerStyle={{gap:16}}
             showsHorizontalScrollIndicator={false}
             numColumns={horizontal ? 1 : 2}
-            columnWrapperStyle={!horizontal && {justifyContent:'space-between',flex:1, gap:16}}
+            columnWrapperStyle={!horizontal && {justifyContent:'space-between',flex:1, gap:16, margin:10}}
             renderItem={({item}) => <DoctorCard horizontal={horizontal} key={item.id} {...item} />} />
     </View>
   )
@@ -38,6 +38,7 @@ export default DoctorsList
 
 const styles = StyleSheet.create({
   container: {
+    height:"100%",
     padding: 6,
     marginRight: 3,
     backgroundColor: COLORS.SECONDARY,

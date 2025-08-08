@@ -1,25 +1,18 @@
 import React from "react";
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import Home from "@/app/(main)/home";
 import { Image } from "react-native";
 import HomeFilled from "@/assets/images/home-filled.png";
 import HomeEmpty from "@/assets/images/home-empty.png";
+import AppointmentFilled from "@/assets/images/appointment-filled.png";
+import AppointmentEmpty from "@/assets/images/appointment-empty.png";
 import SettingFilled from "@/assets/images/setting-filled.png";
 import SettingEmpty from "@/assets/images/settings.png";
 import ProfileFilled from "@/assets/images/ProfileFilled.png";
 import ProfileEmpty from "@/assets/images/ProfileEmpty.png";
-import AppointmentFilled from "@/assets/images/appointment-filled.png";
-import AppointmentEmpty from "@/assets/images/appointment-empty.png";
-import Appointment from "../(main)/appointment";
-import Setting from "../(main)/setting";
-import Profile from "../(main)/profile";
-
-const Tab = createBottomTabNavigator();
+import { Tabs } from "expo-router";
 
 const BottomTabNavigator = () => {
   return (
-    <Tab.Navigator 
-        initialRouteName="home" 
+    <Tabs
         screenOptions={({route}) => ({
             tabBarIcon: ({focused}) => {
                 if (route.name === "home") {
@@ -66,12 +59,7 @@ const BottomTabNavigator = () => {
                 marginTop:5
             }
         })}
-    >
-      <Tab.Screen name="home" component={Home} />
-      <Tab.Screen name="appointment" component={Appointment} />
-      <Tab.Screen name="setting" component={Setting} />
-      <Tab.Screen name="profile" component={Profile} />
-    </Tab.Navigator>
+    />
   );
 };
 

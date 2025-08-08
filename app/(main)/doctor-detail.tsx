@@ -11,6 +11,8 @@ import BackHeader from '@/components/header/BackHeader';
 
 const DoctorDetail = () => {
     const {doctorId} = useLocalSearchParams();
+    console.log("doctor id in detail: ",doctorId);
+    
     const { data } = useQuery({
       queryKey: ["doctorById"],
       queryFn: () => fetchDoctorById(doctorId as string),

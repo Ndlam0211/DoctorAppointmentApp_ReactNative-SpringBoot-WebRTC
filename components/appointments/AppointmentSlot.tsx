@@ -1,6 +1,6 @@
 import { FlatList, ScrollView, StyleSheet, Text, View } from 'react-native'
 import {Calendar} from 'react-native-calendars'
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import dayjs from 'dayjs'
 import BackHeader from '../header/BackHeader';
 import { COLORS } from '@/constants/Colors';
@@ -34,6 +34,15 @@ const AppointmentSlot = ({onChangeHandler}) => {
   const [selectedDate, setSelectedDate] = useState(today);
   const [selectedSlot, setSelectedSlot] = useState(0);
   const [selectedRemindTime, setSelectedRemindTime] = useState(0);
+
+  useEffect(() => {
+    // set default date
+    onChangeHandler?.("date", today);
+    // set default time
+    onChangeHandler?.("time", timeSlots[0].value);
+    // set default reminder
+    onChangeHandler?.("reminder", reminderSlots[0].value);
+  }, []);
 
   const onChangeDate = useCallback((day) => {
     setSelectedDate(day.dateString);

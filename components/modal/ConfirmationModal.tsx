@@ -7,7 +7,7 @@ import { router } from "expo-router";
 const ConfirmationModal = ({visible, onClose, modalText}) => {
     const onPress = useCallback(() => {
         onClose && onClose();
-        router.push('/bottom-tab')
+        router.push('/home')
     },[onClose])
 
   return (

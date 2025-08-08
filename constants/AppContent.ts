@@ -38,7 +38,7 @@ export const doctors = [
   },
   {
     id: "7",
-    name: "Dr. Ava Thompson",
+    name: "Dr. Thompson",
     speciality: "1",
     phone: "789-234-5678",
     email: "ava.thompson@medikart.com",
@@ -50,7 +50,7 @@ export const doctors = [
   },
   {
     id: "8",
-    name: "Dr. Liam Martinez",
+    name: "Dr. Martinez",
     speciality: "3",
     phone: "890-345-6789",
     email: "liam.martinez@medikart.com",

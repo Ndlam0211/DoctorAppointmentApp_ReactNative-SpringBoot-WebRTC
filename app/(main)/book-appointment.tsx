@@ -1,5 +1,5 @@
 import { StyleSheet, Text, TextInput, View } from "react-native";
-import React, { useCallback, useState, useMemo } from "react";
+import React, { useCallback, useState, useMemo, useEffect } from "react";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { fetchDoctorById } from "@/api/doctors";
 import { COLORS } from "@/constants/Colors";
@@ -8,19 +8,19 @@ import DoctorCard from "@/components/doctors/DoctorCard";
 import Button from "@/components/button/Button";
 import AppointmentSlot from "@/components/appointments/AppointmentSlot";
 import { usePreventRemove } from "@react-navigation/native";
-import { useNavigation } from "expo-router";
+import { useNavigation, useLocalSearchParams } from "expo-router";
 import ConfirmationModal from "@/components/modal/ConfirmationModal";
 import { useDispatch } from "react-redux";
 import { createAppoinment } from "@/api/appointment";
 import { setAppointment } from "@/store/screens/appointment";
 
-interface AppointmentProps {
-  doctorId?: string;
-}
 
 type PatientField = "name" | "phoneNumber" | "age";
 
-const BookAppointment: React.FC<AppointmentProps> = ({ doctorId }) => {
+const BookAppointment = () => {
+  const { doctorId } = useLocalSearchParams<{ doctorId: string }>();
+  console.log("doctorid in book appointment: ", doctorId);
+  
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const [formError, setFormError] = useState("");
@@ -31,8 +31,15 @@ const BookAppointment: React.FC<AppointmentProps> = ({ doctorId }) => {
 
   const [appointmentDetails, setAppointmentDetails] = useState({
     patient: { name: "", phoneNumber: "", age: "" },
-    slot: { 'time': "", 'date': "", 'reminder':"" },
+    slot: { time: "", date: "", reminder:"" },
+    doctor: ""
   });
+
+  useEffect(() => {
+    if (doctorId) {
+      setAppointmentDetails((prev) => ({ ...prev, doctor: doctorId }));
+    }
+  }, [doctorId]);
 
   const mutation = useMutation({
     mutationFn: createAppoinment,
@@ -68,7 +75,7 @@ const BookAppointment: React.FC<AppointmentProps> = ({ doctorId }) => {
       }
     }
 
-  }, [appointmentDetails?.patient, isPatientDetail ]);
+  }, [isPatientDetail,appointmentDetails,mutation ]);
 
   const onChangeTextField = useCallback(
     (name: PatientField, value: string) => {

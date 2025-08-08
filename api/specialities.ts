@@ -10,7 +10,7 @@ export const fetchSpecialities = async ()=>{
     // return data;
 
     // mock data
-    return specialities;
+    return [...specialities];
 };
 
 export const fetchSpecialityById = async (id:string) => {
