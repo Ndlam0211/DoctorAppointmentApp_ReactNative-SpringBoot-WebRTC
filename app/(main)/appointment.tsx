@@ -1,6 +1,6 @@
 import { StyleSheet, Text, TextInput, View } from "react-native";
 import React, { useCallback, useState, useMemo } from "react";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { fetchDoctorById } from "@/api/doctors";
 import { COLORS } from "@/constants/Colors";
 import BackHeader from "@/components/header/BackHeader";
@@ -9,6 +9,10 @@ import Button from "@/components/button/Button";
 import AppointmentSlot from "@/components/appointments/AppointmentSlot";
 import { usePreventRemove } from "@react-navigation/native";
 import { useNavigation } from "expo-router";
+import ConfirmationModal from "@/components/modal/ConfirmationModal";
+import { useDispatch } from "react-redux";
+import { createAppoinment } from "@/api/appointment";
+import { setAppointment } from "@/store/screens/appointment";
 
 interface AppointmentProps {
   doctorId?: string;
@@ -18,15 +22,28 @@ type PatientField = "name" | "phoneNumber" | "age";
 
 const Appointment: React.FC<AppointmentProps> = ({ doctorId }) => {
   const navigation = useNavigation();
+  const dispatch = useDispatch();
   const [formError, setFormError] = useState("");
   const [isPatientDetail, setIsPatientDetail] = useState(false);
+  const [displayModal, setDisplayModal] = useState(false);
   const [selectedSlot, setSelectedSlot] = useState(0);
   const [selectedRemindTime, setSelectedRemindTime] = useState(0);
 
   const [appointmentDetails, setAppointmentDetails] = useState({
     patient: { name: "", phoneNumber: "", age: "" },
-    slot: { time: "", date: "" },
+    slot: { 'time': "", 'date': "", 'reminder':"" },
   });
+
+  const mutation = useMutation({
+    mutationFn: createAppoinment,
+    onSuccess:(data) => {
+      dispatch(setAppointment(data));
+      setDisplayModal(true);
+    },
+    onError:(err) => {
+      console.log(err);
+    }
+  })
 
   usePreventRemove(isPatientDetail, ({ data }) => {
     if (isPatientDetail) {
@@ -38,13 +55,20 @@ const Appointment: React.FC<AppointmentProps> = ({ doctorId }) => {
 
   const onPressNext = useCallback(() => {
     const { name, age, phoneNumber } = appointmentDetails.patient;
-    if (name && age && phoneNumber.length === 10) {
-      setFormError("");
-      setIsPatientDetail(true);
-    } else {
-      setFormError("Please fill out the above fields.");
+
+    if(isPatientDetail) {
+      // setDisplayModal(true);
+      mutation.mutate(appointmentDetails);
+    }else {
+      if (name && age && phoneNumber.length === 10) {
+        setFormError("");
+        setIsPatientDetail(true);
+      } else {
+        setFormError("Please fill out the above fields.");
+      }
     }
-  }, [appointmentDetails.patient]);
+
+  }, [appointmentDetails?.patient, isPatientDetail ]);
 
   const onChangeTextField = useCallback(
     (name: PatientField, value: string) => {
@@ -59,6 +83,16 @@ const Appointment: React.FC<AppointmentProps> = ({ doctorId }) => {
     },
     [formError]
   );
+
+  const onChangeHandler = useCallback((name, value) => {
+    setAppointmentDetails((prev) => ({
+      ...prev,
+      slot: {
+        ...prev.slot,
+        [name]: value,
+      },
+    }));
+  },[])
 
   const { data } = useQuery({
     queryKey: ["doctorById"],
@@ -124,7 +158,7 @@ const Appointment: React.FC<AppointmentProps> = ({ doctorId }) => {
         </View>
       )}
 
-      {isPatientDetail && <AppointmentSlot />}
+      {isPatientDetail && <AppointmentSlot onChangeHandler={onChangeHandler} />}
 
       <View style={styles.footer}>
         {formError !== "" && <Text style={styles.errorText}>{formError}</Text>}
@@ -134,6 +168,12 @@ const Appointment: React.FC<AppointmentProps> = ({ doctorId }) => {
           label={isPatientDetail ? "Set Appointment" : "Next"}
         />
       </View>
+
+      <ConfirmationModal
+        modalText={`You booked an appointment with ${data?.name} on ${appointmentDetails?.slot?.date}, at ${appointmentDetails?.slot?.time}.`}
+        onClose={() => setDisplayModal(false)}
+        visible={displayModal}
+      />
     </View>
   );
 };

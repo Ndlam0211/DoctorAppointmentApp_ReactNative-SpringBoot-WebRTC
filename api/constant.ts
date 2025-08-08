@@ -6,3 +6,9 @@ export const API_PATH = {
     APPOINTMENT: '/appointments',
     AUTH_LOGIN: '/auth/login'
 }
+
+export const getHeaders = () => {
+    return {
+        // "Authorization" : `Bearer ${getToken()}`
+    }
+}

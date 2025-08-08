@@ -133,3 +133,90 @@ export const doctors = [
     fee: 1500,
   },
 ];
+
+export const appointmentData = [
+  {
+    id:1,
+    slot: {
+      date: '2025-08-06',
+      time: '11:00',
+      reminder: '15'
+    },
+    patient: {
+      name: 'test',
+      phoneNumber: '0123456789',
+      age: 22
+    },
+    doctor: 1,
+    user: 1
+  }
+]
+
+export const userData = [
+  {
+    id: 1,
+    name: "test",
+    image: "",
+    email: "",
+    dob: "",
+    phoneNumber: "0123456789",
+    age: 22,
+    callerId: "test-user-1",
+    roles: ["USER", "ADMIN"],
+  },
+  {
+    id: 2,
+    name: "Alice Johnson",
+    image: "",
+    email: "alice.johnson@example.com",
+    dob: "1998-04-12",
+    phoneNumber: "0987654321",
+    age: 27,
+    callerId: "alice-user-2",
+    roles: ["USER"],
+  },
+  {
+    id: 3,
+    name: "Bob Smith",
+    image: "",
+    email: "bob.smith@example.com",
+    dob: "1995-09-05",
+    phoneNumber: "0912345678",
+    age: 30,
+    callerId: "bob-user-3",
+    roles: ["USER", "MODERATOR"],
+  },
+  {
+    id: 4,
+    name: "Charlie Nguyen",
+    image: "",
+    email: "charlie.nguyen@example.com",
+    dob: "2000-12-20",
+    phoneNumber: "0978123456",
+    age: 24,
+    callerId: "charlie-user-4",
+    roles: ["USER"],
+  },
+  {
+    id: 5,
+    name: "Diana Lee",
+    image: "",
+    email: "diana.lee@example.com",
+    dob: "1993-07-15",
+    phoneNumber: "0909123456",
+    age: 32,
+    callerId: "diana-user-5",
+    roles: ["ADMIN"],
+  },
+  {
+    id: 6,
+    name: "Ethan Kim",
+    image: "",
+    email: "ethan.kim@example.com",
+    dob: "1999-11-02",
+    phoneNumber: "0934567890",
+    age: 25,
+    callerId: "ethan-user-6",
+    roles: ["USER"],
+  },
+];
