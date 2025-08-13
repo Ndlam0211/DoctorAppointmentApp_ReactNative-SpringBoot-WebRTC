@@ -20,7 +20,7 @@ export default function Index() {
             </View>
         </View>
         <View style={{bottom:0,position:'absolute',width:'100%',paddingVertical:15, paddingHorizontal:10}}>
-            <Button label={'Get started'} onPress={()=>router.push("/login")} style={{backgroundColor:'#0B3DA9'}}/>
+            <Button label={'Get started'} onPress={()=>router.replace("/login")} style={{backgroundColor:'#0B3DA9'}}/>
         </View>
       </ImageBackground>
     </View>

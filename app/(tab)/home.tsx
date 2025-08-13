@@ -14,8 +14,7 @@ import { fetchSpecialities, fetchSpecialityById } from '@/api/specialities';
 import dayjs from 'dayjs';
 
 const Home = () => {
-  const appointments = useSelector((state) => state.appointment.appointments);
-  console.log(appointments);
+  const appointments = useSelector((state:any) => state.appointment.appointments);
 
   const { data } = useQuery({
     queryKey: ["doctorById", appointments[0]?.doctor],
@@ -28,8 +27,6 @@ const Home = () => {
     queryFn: () => fetchSpecialityById(data?.speciality as string),
     enabled: !!data?.speciality, // chỉ gọi khi có ID
   });
-
-  console.log("specialities: ", specialityObj);
 
   return (
     <ScrollView style={{ flex: 1, backgroundColor: "white" }}>

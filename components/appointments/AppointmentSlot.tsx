@@ -27,7 +27,7 @@ const reminderSlots = [
   },
 ]
 
-const AppointmentSlot = ({onChangeHandler}) => {
+const AppointmentSlot = ({onChangeHandler}:any) => {
   const today = dayjs().format("YYYY-MM-DD");
   const maxDate = dayjs().add(14, "day").format("YYYY-MM-DD");
 

@@ -2,6 +2,7 @@ import { Image, StyleSheet, Text, TextInput, View } from 'react-native'
 import React, { useCallback, useState } from 'react'
 import { router } from 'expo-router';
 import Button from "@/components/button/Button";
+import GoogleSignIn from '@/components/googleSignin/GoogleSignIn';
 
 const Login = () => {
   const [mobileNumber, setMobileNumber] = useState('');
@@ -34,10 +35,7 @@ const Login = () => {
             </View>
         </View>
         <View style={{bottom:0,position:'absolute',width:'100%',paddingVertical:15, paddingHorizontal:10}}>
-            <Button style={{backgroundColor:'white', flexDirection: 'row', gap:4, borderWidth:1, borderColor:'#939393'}}>
-              <Image source={require('@/assets/images/google_icon.png')} />
-              <Text style={{color:'black', fontSize:18}}>Continue with Google</Text>
-            </Button>
+          <GoogleSignIn />
         </View>
       </View>
     </View>
