@@ -1,0 +1,12 @@
+spring:
+  application:
+    name: medikart
+  data:
+    mongodb:
+      uri: mongodb+srv://${MONGO_USER}:${MONGO_PASSWORD}@lamnd.zx4m2d7.mongodb.net/medikart?retryWrites=true&w=majority&appName=Lamnd
+
+jwt:
+  auth:
+    app: medikart
+  secret_key: ${JWT_KEY}
+  expires_in: 7200 #2 hours
