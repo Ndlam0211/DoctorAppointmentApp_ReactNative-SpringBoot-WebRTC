@@ -8,14 +8,16 @@ import DoctorCard from '@/components/doctors/DoctorCard';
 import { doctorMetrics } from '@/constants/DoctorMetrics';
 import { COLORS } from '@/constants/Colors';
 import BackHeader from '@/components/header/BackHeader';
+import { useSelector } from 'react-redux';
 
 const DoctorDetail = () => {
+  const { token } = useSelector((state:any) => state.user);
     const {doctorId} = useLocalSearchParams();
     console.log("doctor id in detail: ",doctorId);
     
     const { data } = useQuery({
       queryKey: ["doctorById"],
-      queryFn: () => fetchDoctorById(doctorId as string),
+      queryFn: () => fetchDoctorById(doctorId as string, token),
       enabled: !!doctorId,
     });
   return (

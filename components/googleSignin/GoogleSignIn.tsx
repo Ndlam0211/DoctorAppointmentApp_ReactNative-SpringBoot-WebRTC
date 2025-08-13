@@ -4,22 +4,25 @@ import Button from '../button/Button'
 import {GoogleSignin, isSuccessResponse} from '@react-native-google-signin/google-signin'
 import { router } from 'expo-router'
 import { useUser } from '@/context/UserContext'
+import { authenticate } from '@/api/authService'
 
 const GoogleSignIn = () => {
-    const { setUser } = useUser();
+    const { setUser, setToken } = useUser();
 
     GoogleSignin.configure({
-        webClientId: process.env.WEB_CLIENT_ID,
-        profileImageSize: 150
+      webClientId:
+        "117197118056-fguqeigrk289d1eeu3cdk2qr1mjet1av.apps.googleusercontent.com",
+      profileImageSize: 150,
     });
 
-    const handleLoginSuccess = (userData:any) => {
+    const handleLoginSuccess = async (userData:any, token:string) => {
       setUser({
         name: userData.name,
         email: userData.email,
         photo: userData.photo,
       });
 
+      setToken(token);
       router.replace("/home");
     };
 
@@ -27,14 +30,18 @@ const GoogleSignIn = () => {
         try {
             await GoogleSignin.hasPlayServices()
             const response = await GoogleSignin.signIn()
-
+            
             if (isSuccessResponse(response)) {
-                const {user} = response.data;
-                handleLoginSuccess(user);
-                // call our backend api 
-            } 
+              authenticate(response.data).then(async (res) => {
+                console.log("token: ", res);
+                const { user } = response.data;
+                handleLoginSuccess(user, res?.token);
+              }).catch((error) => {
+                console.log("Error authenticating with backend: ", error);
+              });
+            }
         } catch (error) {
-            console.log(error);
+            console.log("Error signing in with Google: ", error);
         }
     }
   return (

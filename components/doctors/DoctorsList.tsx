@@ -6,11 +6,14 @@ import DoctorCard from './DoctorCard';
 import { COLORS } from '@/constants/Colors';
 import Button from '../button/Button';
 import { router } from 'expo-router';
+import { useUser } from '@/context/UserContext';
 
 const DoctorsList = ({horizontal}:any) => {
+  const {token} = useUser();
+
     const {data,isLoading,error} = useQuery({
         queryKey:['doctors'],
-        queryFn:fetchDoctors,   
+        queryFn:() => fetchDoctors(String(token)),   
     }) ;
 
   return (

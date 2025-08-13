@@ -11,6 +11,8 @@ type User = {
 type UserContextType = {
   user: User | null;
   setUser: (user: User) => void;
+  token: string | null;
+  setToken: (token: string) => void;
   loading: boolean;
   setLoading: (value: boolean) => void;
   logout: () => void;
@@ -20,6 +22,7 @@ const UserContext = createContext<UserContextType | undefined>(undefined);
 
 export const UserProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
+  const [token, setToken] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
 
   const logout = async () => {
@@ -36,7 +39,7 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   return (
-    <UserContext.Provider value={{ user, setUser, loading, setLoading, logout }}>
+    <UserContext.Provider value={{ user, token, setUser, setToken, loading, setLoading, logout }}>
       {children}
     </UserContext.Provider>
   );

@@ -43,5 +43,3 @@ const Login = () => {
 }
 
 export default Login;
-
-const styles = StyleSheet.create({})

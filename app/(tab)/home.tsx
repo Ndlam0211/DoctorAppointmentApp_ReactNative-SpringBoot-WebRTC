@@ -14,11 +14,12 @@ import { fetchSpecialities, fetchSpecialityById } from '@/api/specialities';
 import dayjs from 'dayjs';
 
 const Home = () => {
+  const { token } = useSelector((state:any) => state.user);
   const appointments = useSelector((state:any) => state.appointment.appointments);
 
   const { data } = useQuery({
     queryKey: ["doctorById", appointments[0]?.doctor],
-    queryFn: () => fetchDoctorById(appointments[0]?.doctor),
+    queryFn: () => fetchDoctorById(appointments[0]?.doctor, token),
     enabled: !!appointments[0]?.doctor,
   });
 
