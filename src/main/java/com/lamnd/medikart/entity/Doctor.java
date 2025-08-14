@@ -12,7 +12,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Document(collation = "doctors")
+@Document(collection = "doctors")
 public class Doctor {
     @Id
     private String id;

@@ -1,4 +1,4 @@
-package security;
+package com.lamnd.medikart.security;
 
 
 import com.auth0.jwt.exceptions.JWTVerificationException;
@@ -17,6 +17,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -32,8 +33,12 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
 
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) {
+        // Allow CORS preflight requests through without authentication
+        if ("OPTIONS".equalsIgnoreCase(request.getMethod())) {
+            return true;
+        }
         String path = request.getServletPath();
-        return path.startsWith("/api/v1/auth/login") || path.startsWith("/swagger-ui") || path.startsWith("/v3/api-docs");
+        return path.startsWith("/api/auth/") || path.startsWith("/swagger-ui") || path.startsWith("/v3/api-docs");
     }
 
     @Override
@@ -60,28 +65,30 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
                 if (SecurityContextHolder.getContext().getAuthentication() == null)
                     SecurityContextHolder.getContext().setAuthentication(authToken);
             } else {
-                sendErrorResponse(request, response, HttpServletResponse.SC_UNAUTHORIZED, "Authentication failed", "JWT token not found");
+                sendErrorResponse(request, response, HttpServletResponse.SC_UNAUTHORIZED, "UNAUTHORIZED", "JWT token not found");
                 return;
             }
 
             filterChain.doFilter(request,response);
         } catch (JWTVerificationException e) {
-            logger.info("Invalid JWT token");
-            sendErrorResponse(request, response, HttpServletResponse.SC_UNAUTHORIZED, "Authentication failed", e.getMessage());
+            logger.info("Invalid JWT token: "+ e.getMessage());
+            sendErrorResponse(request, response, HttpServletResponse.SC_UNAUTHORIZED, "UNAUTHORIZED", e.getMessage());
         }
     }
 
-    private void sendErrorResponse(HttpServletRequest request, HttpServletResponse response, int statusCode, String error, String message) throws IOException{
+    private void sendErrorResponse(HttpServletRequest request, HttpServletResponse response, int statusCode, String code, String message) throws IOException{
         response.setStatus(statusCode);
         response.setContentType("application/json;charset=UTF-8");
 
-        Map<String,Object> errorResponse = new HashMap<>();
+        Map<String,Object> meta = new HashMap<>();
+        meta.put("timestamp", Instant.now().toString());
+        meta.put("path", request.getRequestURI());
 
-        errorResponse.put("timestamp", System.currentTimeMillis());
-        errorResponse.put("status", statusCode);
-        errorResponse.put("error", error);
+        Map<String,Object> errorResponse = new HashMap<>();
+        errorResponse.put("success", false);
+        errorResponse.put("code", code);
         errorResponse.put("message", message);
-        errorResponse.put("path", request.getRequestURI());
+        errorResponse.put("data", meta);
 
         String jsonResponse = objectMapper.writeValueAsString(errorResponse);
 

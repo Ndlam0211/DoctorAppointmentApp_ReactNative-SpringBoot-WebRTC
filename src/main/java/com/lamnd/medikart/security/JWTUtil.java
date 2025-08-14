@@ -1,4 +1,4 @@
-package security;
+package com.lamnd.medikart.security;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
@@ -8,7 +8,6 @@ import com.auth0.jwt.interfaces.DecodedJWT;
 import com.lamnd.medikart.config.JWTConfig;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import io.jsonwebtoken.io.Decoder;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.stereotype.Component;
 
