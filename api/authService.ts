@@ -11,3 +11,25 @@ export const authenticate = async (data:any) => {
 
     return response.data;
 }
+
+export const login = async (data: any) => {
+  const url = `${BASE_URL}${API_PATH.AUTH_LOGIN}`;
+
+  const response = await axios(url, {
+    data: data,
+    method: "POST",
+  });
+
+  return response.data;
+};
+
+export const register = async (data: any) => {
+  const url = `${BASE_URL}${API_PATH.AUTH_REGISTER}`;
+
+  const response = await axios(url, {
+    data: data,
+    method: "POST",
+  });
+
+  return response.data;
+};

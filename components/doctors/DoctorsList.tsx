@@ -1,20 +1,21 @@
 import { FlatList, Image, StyleSheet, Text, View } from 'react-native'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { fetchDoctors } from '@/api/doctors';
 import DoctorCard from './DoctorCard';
 import { COLORS } from '@/constants/Colors';
 import Button from '../button/Button';
 import { router } from 'expo-router';
-import { useUser } from '@/context/UserContext';
 
 const DoctorsList = ({horizontal}:any) => {
-  const {token} = useUser();
+    const { data, refetch } = useQuery({
+      queryKey: ["doctors"],
+      queryFn: fetchDoctors,
+    });
 
-    const {data,isLoading,error} = useQuery({
-        queryKey:['doctors'],
-        queryFn:() => fetchDoctors(String(token)),   
-    }) ;
+    useEffect(() => {
+      refetch();
+    }, [refetch]);
 
   return (
     <View style={[styles.container, !horizontal ? {height:'100%'} : {}]}>

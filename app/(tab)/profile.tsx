@@ -10,7 +10,8 @@ import {
 } from "react-native";
 import { useUser } from "@/context/UserContext";
 
-const DEFAULT_AVATAR = "https://via.placeholder.com/100";
+const DEFAULT_AVATAR =
+  "https://png.pngtree.com/png-clipart/20200701/original/pngtree-business-men-silhouette-avatar-png-image_5434725.jpg";
 
 const Profile = () => {
   const { user, loading, logout } = useUser();

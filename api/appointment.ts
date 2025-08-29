@@ -1,13 +1,12 @@
 import axios from "axios";
-import { API_PATH, BASE_URL, getHeaders } from "./constant"
+import { API_PATH, BASE_URL } from "./constant"
 
-export const createAppoinment = async (data) => {
+export const createAppoinment = async (data:any) => {
     const url = BASE_URL + API_PATH.APPOINTMENT;
 
     // const response = await axios(url, {
     //     data: data,
     //     method: 'POST',
-    //     headers: getHeaders()
     // })
 
     // return response.data;

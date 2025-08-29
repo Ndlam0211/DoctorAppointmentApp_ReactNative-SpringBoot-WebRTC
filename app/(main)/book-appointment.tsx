@@ -1,38 +1,45 @@
-import { StyleSheet, Text, TextInput, View } from "react-native";
-import React, { useCallback, useState, useMemo, useEffect } from "react";
-import { useMutation, useQuery } from "@tanstack/react-query";
-import { fetchDoctorById } from "@/api/doctors";
-import { COLORS } from "@/constants/Colors";
-import BackHeader from "@/components/header/BackHeader";
-import DoctorCard from "@/components/doctors/DoctorCard";
-import Button from "@/components/button/Button";
-import AppointmentSlot from "@/components/appointments/AppointmentSlot";
-import { usePreventRemove } from "@react-navigation/native";
-import { useNavigation, useLocalSearchParams } from "expo-router";
-import ConfirmationModal from "@/components/modal/ConfirmationModal";
-import { useDispatch } from "react-redux";
 import { createAppoinment } from "@/api/appointment";
+import { fetchDoctorById } from "@/api/doctors";
+import AppointmentSlot from "@/components/appointments/AppointmentSlot";
+import Button from "@/components/button/Button";
+import DoctorCard from "@/components/doctors/DoctorCard";
+import BackHeader from "@/components/header/BackHeader";
+import ConfirmationModal from "@/components/modal/ConfirmationModal";
+import {
+  ShowMessage as ToastComponent,
+  useShowMessage,
+} from "@/components/showMessage";
+import { COLORS } from "@/constants/Colors";
 import { setAppointment } from "@/store/screens/appointment";
-
+import { usePreventRemove } from "@react-navigation/native";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { useLocalSearchParams, useNavigation } from "expo-router";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
+import {
+  ActivityIndicator,
+  StyleSheet,
+  Text,
+  TextInput,
+  View,
+} from "react-native";
+import { useDispatch } from "react-redux";
 
 type PatientField = "name" | "phoneNumber" | "age";
 
 const BookAppointment = () => {
   const { doctorId } = useLocalSearchParams<{ doctorId: string }>();
-  console.log("doctorid in book appointment: ", doctorId);
-  
+
   const navigation = useNavigation();
   const dispatch = useDispatch();
-  const [formError, setFormError] = useState("");
+  const [,/* formError removed: using toast messages */] = useState("");
   const [isPatientDetail, setIsPatientDetail] = useState(false);
   const [displayModal, setDisplayModal] = useState(false);
-  const [selectedSlot, setSelectedSlot] = useState(0);
-  const [selectedRemindTime, setSelectedRemindTime] = useState(0);
+  // removed unused selectedSlot/selectedRemindTime state
 
   const [appointmentDetails, setAppointmentDetails] = useState({
     patient: { name: "", phoneNumber: "", age: "" },
-    slot: { time: "", date: "", reminder:"" },
-    doctor: ""
+    slot: { time: "", date: "", reminder: "" },
+    doctor: "",
   });
 
   useEffect(() => {
@@ -41,16 +48,27 @@ const BookAppointment = () => {
     }
   }, [doctorId]);
 
+  // Toast hook
+  const {
+    visible,
+    toastData,
+    showSuccess,
+    showError,
+    showWarning,
+    hideMessage,
+  } = useShowMessage();
+
   const mutation = useMutation({
     mutationFn: createAppoinment,
-    onSuccess:(data) => {
+    onSuccess: (data) => {
       dispatch(setAppointment(data));
       setDisplayModal(true);
     },
-    onError:(err) => {
+    onError: (err: any) => {
       console.log(err);
-    }
-  })
+      showError(err?.message || "Failed to create appointment", "Error");
+    },
+  });
 
   usePreventRemove(isPatientDetail, ({ data }) => {
     if (isPatientDetail) {
@@ -63,35 +81,55 @@ const BookAppointment = () => {
   const onPressNext = useCallback(() => {
     const { name, age, phoneNumber } = appointmentDetails.patient;
 
-    if(isPatientDetail) {
+    if (isPatientDetail) {
       // setDisplayModal(true);
       mutation.mutate(appointmentDetails);
-    }else {
-      if (name && age && phoneNumber.length === 10) {
-        setFormError("");
-        setIsPatientDetail(true);
+    } else {
+      // Validate patient details with specific error messages
+      const errors = [];
+
+      if (!name.trim()) {
+        errors.push("Patient name is required");
+      }
+
+      if (!phoneNumber.trim()) {
+        errors.push("Contact number is required");
+      } else if (phoneNumber.length !== 10) {
+        errors.push("Contact number must be exactly 10 digits");
+      } else if (!/^\d+$/.test(phoneNumber)) {
+        errors.push("Contact number must contain only numbers");
+      }
+
+      if (!age.trim()) {
+        errors.push("Patient age is required");
+      } else if (isNaN(Number(age)) || Number(age) <= 0) {
+        errors.push("Please enter a valid age");
+      } else if (Number(age) > 120) {
+        errors.push("Please enter a realistic age");
+      }
+
+      if (errors.length > 0) {
+        showWarning(errors.join("\n"), "Validation Error");
       } else {
-        setFormError("Please fill out the above fields.");
+        setIsPatientDetail(true);
       }
     }
+  }, [isPatientDetail, appointmentDetails, mutation, showWarning]);
 
-  }, [isPatientDetail,appointmentDetails,mutation ]);
+  const isMutating =
+    (mutation as any)?.isLoading ?? (mutation as any)?.status === "loading";
 
-  const onChangeTextField = useCallback(
-    (name: PatientField, value: string) => {
-      if (formError) setFormError("");
-      setAppointmentDetails((prev) => ({
-        ...prev,
-        patient: {
-          ...prev.patient,
-          [name]: value,
-        },
-      }));
-    },
-    [formError]
-  );
+  const onChangeTextField = useCallback((name: PatientField, value: string) => {
+    setAppointmentDetails((prev) => ({
+      ...prev,
+      patient: {
+        ...prev.patient,
+        [name]: value,
+      },
+    }));
+  }, []);
 
-  const onChangeHandler = useCallback((name, value) => {
+  const onChangeHandler = useCallback((name: string, value: string) => {
     setAppointmentDetails((prev) => ({
       ...prev,
       slot: {
@@ -99,10 +137,10 @@ const BookAppointment = () => {
         [name]: value,
       },
     }));
-  },[])
+  }, []);
 
-  const { data } = useQuery({
-    queryKey: ["doctorById"],
+  const { data, isLoading } = useQuery({
+    queryKey: ["doctorById", doctorId],
     queryFn: () => fetchDoctorById(doctorId as string),
     enabled: !!doctorId,
   });
@@ -137,12 +175,23 @@ const BookAppointment = () => {
         <View style={styles.content}>
           <BackHeader />
           <Text style={styles.doctorHeading}>Doctor</Text>
-          <DoctorCard
-            {...data}
-            style={styles.doctorCard}
-            imageStyle={styles.doctorImage}
-            contentStyle={styles.contentStyle}
-          />
+          {isLoading ? (
+            <View
+              style={[
+                styles.doctorCard,
+                { alignItems: "center", justifyContent: "center", height: 120 },
+              ]}
+            >
+              <ActivityIndicator size="small" color={COLORS.PRIMARY} />
+            </View>
+          ) : (
+            <DoctorCard
+              {...data}
+              style={styles.doctorCard}
+              imageStyle={styles.doctorImage}
+              contentStyle={styles.contentStyle}
+            />
+          )}
 
           <View>
             <Text style={[styles.doctorHeading, styles.appointmentLabel]}>
@@ -168,11 +217,18 @@ const BookAppointment = () => {
       {isPatientDetail && <AppointmentSlot onChangeHandler={onChangeHandler} />}
 
       <View style={styles.footer}>
-        {formError !== "" && <Text style={styles.errorText}>{formError}</Text>}
         <Button
-          onPress={onPressNext}
-          style={{ backgroundColor: COLORS.PRIMARY }}
-          label={isPatientDetail ? "Set Appointment" : "Next"}
+          onPress={isMutating ? undefined : onPressNext}
+          style={{ backgroundColor: isMutating ? "#BDBDBD" : COLORS.PRIMARY }}
+          label={
+            isPatientDetail
+              ? isMutating
+                ? "Setting..."
+                : "Set Appointment"
+              : isMutating
+              ? "Please wait"
+              : "Next"
+          }
         />
       </View>
 
@@ -180,6 +236,16 @@ const BookAppointment = () => {
         modalText={`You booked an appointment with ${data?.name} on ${appointmentDetails?.slot?.date}, at ${appointmentDetails?.slot?.time}.`}
         onClose={() => setDisplayModal(false)}
         visible={displayModal}
+      />
+      {/* Toast message component */}
+      <ToastComponent
+        visible={visible}
+        type={toastData?.type}
+        title={toastData?.title}
+        message={toastData?.message || ""}
+        duration={toastData?.duration}
+        onHide={hideMessage}
+        onPress={toastData?.onPress}
       />
     </View>
   );
@@ -208,7 +274,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     borderWidth: 1,
     borderRadius: 10,
-    flex:0,
+    flex: 0,
     width: "100%",
     paddingHorizontal: 10,
     alignItems: "center",

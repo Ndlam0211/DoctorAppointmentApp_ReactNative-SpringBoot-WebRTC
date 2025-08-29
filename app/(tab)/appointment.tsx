@@ -14,6 +14,8 @@ import { fetchDoctorById } from "@/api/doctors";
 import { fetchSpecialityById } from "@/api/specialities";
 import dayjs from "dayjs";
 import { COLORS } from "@/constants/Colors";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { router } from "expo-router";
 
 const AppointmentCard = ({ appointment }: { appointment: any }) => {
   const { data: doctor, isLoading: loadingDoctor } = useQuery({
@@ -37,7 +39,9 @@ const AppointmentCard = ({ appointment }: { appointment: any }) => {
   }
 
   return (
-    <TouchableOpacity style={styles.cardContainer}>
+    <TouchableOpacity style={styles.cardContainer} onPress={() =>
+            router.push({ pathname: "/appointment-detail", params: { doctorId: doctor?.id } })
+          }>
       <View style={{ flexDirection: "row" }}>
         <Image source={{ uri: doctor?.image }} style={styles.doctorImage} />
         <View style={{ paddingHorizontal: 10 }}>
@@ -81,18 +85,22 @@ const Appointment = () => {
   if (appointments.length === 0) {
     return (
       <View style={styles.emptyContainer}>
-        <Text style={styles.emptyText}>Bạn chưa có lịch hẹn nào.</Text>
+        <Text style={styles.emptyText}>You don&apos;t have any appointments yet.</Text>
       </View>
     );
   }
 
   return (
-    <FlatList
-      data={appointments}
-      keyExtractor={(item, index) => item.id || index.toString()}
-      renderItem={({ item }) => <AppointmentCard appointment={item} />}
-      contentContainerStyle={{ paddingVertical: 10 }}
-    />
+    <>
+      <SafeAreaView />
+      <FlatList
+        data={appointments}
+        keyExtractor={(item, index) => item.id || index.toString()}
+        renderItem={({ item }) => <AppointmentCard appointment={item} />}
+        contentContainerStyle={{ paddingVertical: 10 }}
+      />
+
+    </>
   );
 };
 

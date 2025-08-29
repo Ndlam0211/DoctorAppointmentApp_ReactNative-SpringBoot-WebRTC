@@ -1,21 +1,22 @@
-import { doctors } from "@/constants/AppContent";
-import { API_PATH, BASE_URL } from "./constant"
+import { API_PATH, BASE_URL, getToken } from "./constant"
 import axios from "axios";
 
-export const fetchDoctors = async (token:string)=>{
-    const url = BASE_URL + API_PATH.DOCTORS;
+export const fetchDoctors = async () => {
+  const url = BASE_URL + API_PATH.DOCTORS;
+  const token = await getToken();
 
     const { data } = await axios.get(url, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     });
-    
-    return data;
+
+    return data.data;
 };
 
-export const fetchDoctorById = async (id:string, token:string) => {
+export const fetchDoctorById = async (id:string) => {
   const url = BASE_URL + API_PATH.DOCTORS + `/${id}`;
+  const token = await getToken();
 
   const { data } = await axios.get(url, {
     headers: {
@@ -23,5 +24,5 @@ export const fetchDoctorById = async (id:string, token:string) => {
     },
   });
 
-  return data;
+  return data.data;
 };

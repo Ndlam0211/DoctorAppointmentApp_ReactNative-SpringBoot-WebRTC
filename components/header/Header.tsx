@@ -4,31 +4,48 @@ import { COLORS } from '@/constants/Colors'
 import { ImageBackground } from 'expo-image'
 import Button from '@/components/button/Button'
 import { router } from 'expo-router'
+import { useUser } from '@/context/UserContext'
+
+const DEFAULT_AVATAR = "https://via.placeholder.com/100";
 
 const Header = () => {
+  const {user} = useUser();
+
   return (
     <View style={styles.container}>
-        <ImageBackground style={{flex:1}} source={require('@/assets/images/splash.png')}>
-            <View style={styles.profile}>
-                <View style={{flexDirection:'row'}}>  
-                    <Image style={styles.image} source={require('@/assets/images/avatar.png')} />
-                    <View style={styles.bio}>
-                        <Text style={styles.text}>Hello, Welcome 🏕️</Text>
-                        <Text style={[styles.text,{paddingTop:5}]}>Username</Text>
-                    </View>
-                </View>
-                <View style={styles.bellIcon}>
-                    <Button>
-                        <Image source={require("@/assets/images/icon.png")} />
-                    </Button>
-                </View>
+      <ImageBackground
+        style={{ flex: 1 }}
+        source={require("@/assets/images/splash.png")}
+      >
+        <View style={styles.profile}>
+          <View style={{ flexDirection: "row" }}>
+            <Image
+              style={styles.image}
+              source={user?.photo ? { uri: user.photo } : require("@/assets/images/avatar.png")}
+            />
+            <View style={styles.bio}>
+              <Text style={styles.text}>Hello, Welcome 🏕️</Text>
+              <Text style={[styles.text, { paddingTop: 5 }]}>{user ? user.name : "User Name"}</Text>
             </View>
+          </View>
+          <View style={styles.bellIcon}>
+            <Button>
+              <Image source={require("@/assets/images/icon.png")} />
+            </Button>
+          </View>
+        </View>
 
-            <TouchableOpacity onPress={() => router.push("/search")} style={styles.searchBar}>
-                <Image style={styles.searchImage} source={require("@/assets/images/search.png")} />
-                <Text style={styles.searchText}>{'Search Doctor...'}</Text>
-            </TouchableOpacity>
-        </ImageBackground>
+        <TouchableOpacity
+          onPress={() => router.push("/search")}
+          style={styles.searchBar}
+        >
+          <Image
+            style={styles.searchImage}
+            source={require("@/assets/images/search.png")}
+          />
+          <Text style={styles.searchText}>{"Search Doctor..."}</Text>
+        </TouchableOpacity>
+      </ImageBackground>
     </View>
   );
 }

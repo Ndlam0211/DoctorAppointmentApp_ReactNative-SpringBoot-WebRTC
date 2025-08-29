@@ -5,9 +5,10 @@ import {GoogleSignin, isSuccessResponse} from '@react-native-google-signin/googl
 import { router } from 'expo-router'
 import { useUser } from '@/context/UserContext'
 import { authenticate } from '@/api/authService'
+import { getToken, setToken } from '@/api/constant'
 
 const GoogleSignIn = () => {
-    const { setUser, setToken } = useUser();
+    const { setUser } = useUser();
 
     GoogleSignin.configure({
       webClientId:
@@ -22,7 +23,8 @@ const GoogleSignIn = () => {
         photo: userData.photo,
       });
 
-      setToken(token);
+      await setToken(token);
+
       router.replace("/home");
     };
 
@@ -33,9 +35,9 @@ const GoogleSignIn = () => {
             
             if (isSuccessResponse(response)) {
               authenticate(response.data).then(async (res) => {
-                console.log("token: ", res);
+                console.log("token: ", res?.data?.token);
                 const { user } = response.data;
-                handleLoginSuccess(user, res?.token);
+                handleLoginSuccess(user, res?.data?.token);
               }).catch((error) => {
                 console.log("Error authenticating with backend: ", error);
               });
