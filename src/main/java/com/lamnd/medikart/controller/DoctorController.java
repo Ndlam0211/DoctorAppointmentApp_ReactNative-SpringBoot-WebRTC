@@ -1,10 +1,10 @@
 package com.lamnd.medikart.controller;
 
 import com.lamnd.medikart.annotation.ApiSuccess;
-import com.lamnd.medikart.dto.ApiResponse;
-import com.lamnd.medikart.dto.CreateDoctorRequest;
+import com.lamnd.medikart.dto.response.ApiResponse;
+import com.lamnd.medikart.dto.request.CreateDoctorRequest;
 import com.lamnd.medikart.dto.DoctorDTO;
-import com.lamnd.medikart.dto.UpdateDoctorRequest;
+import com.lamnd.medikart.dto.request.UpdateDoctorRequest;
 import com.lamnd.medikart.entity.Doctor;
 import com.lamnd.medikart.service.DoctorService;
 import jakarta.validation.Valid;

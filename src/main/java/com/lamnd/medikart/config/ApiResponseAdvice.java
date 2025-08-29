@@ -1,7 +1,7 @@
 package com.lamnd.medikart.config;
 
 import com.lamnd.medikart.annotation.ApiSuccess;
-import com.lamnd.medikart.dto.ApiResponse;
+import com.lamnd.medikart.dto.response.ApiResponse;
 import org.springframework.core.MethodParameter;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;

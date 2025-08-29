@@ -1,4 +1,4 @@
-package com.lamnd.medikart.dto;
+package com.lamnd.medikart.dto.response;
 
 import lombok.Builder;
 import lombok.Data;

@@ -1,8 +1,8 @@
 package com.lamnd.medikart.controller;
 
 import com.lamnd.medikart.annotation.ApiSuccess;
-import com.lamnd.medikart.dto.ApiResponse;
-import com.lamnd.medikart.dto.UpdateUserRequest;
+import com.lamnd.medikart.dto.response.ApiResponse;
+import com.lamnd.medikart.dto.request.UpdateUserRequest;
 import com.lamnd.medikart.entity.User;
 import com.lamnd.medikart.service.UserService;
 import jakarta.validation.Valid;

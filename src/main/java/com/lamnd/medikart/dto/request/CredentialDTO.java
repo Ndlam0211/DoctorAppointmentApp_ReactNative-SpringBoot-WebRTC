@@ -1,4 +1,4 @@
-package com.lamnd.medikart.dto;
+package com.lamnd.medikart.dto.request;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;

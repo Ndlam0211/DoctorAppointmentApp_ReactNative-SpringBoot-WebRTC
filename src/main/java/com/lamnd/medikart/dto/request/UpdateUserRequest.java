@@ -1,4 +1,4 @@
-package com.lamnd.medikart.dto;
+package com.lamnd.medikart.dto.request;
 
 import com.lamnd.medikart.entity.User;
 import jakarta.validation.constraints.Size;

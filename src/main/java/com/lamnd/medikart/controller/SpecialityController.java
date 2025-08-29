@@ -1,7 +1,7 @@
 package com.lamnd.medikart.controller;
 
 import com.lamnd.medikart.annotation.ApiSuccess;
-import com.lamnd.medikart.dto.ApiResponse;
+import com.lamnd.medikart.dto.response.ApiResponse;
 import com.lamnd.medikart.entity.Speciality;
 import com.lamnd.medikart.service.SpecialityService;
 import jakarta.validation.Valid;

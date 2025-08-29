@@ -1,4 +1,4 @@
-package com.lamnd.medikart.dto;
+package com.lamnd.medikart.dto.request;
 
 import com.lamnd.medikart.entity.TimeSlot;
 import jakarta.validation.constraints.Email;

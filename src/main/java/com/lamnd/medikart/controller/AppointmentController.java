@@ -1,8 +1,8 @@
 package com.lamnd.medikart.controller;
 
 import com.lamnd.medikart.annotation.ApiSuccess;
-import com.lamnd.medikart.dto.ApiResponse;
-import com.lamnd.medikart.dto.AppointmentRequest;
+import com.lamnd.medikart.dto.response.ApiResponse;
+import com.lamnd.medikart.dto.request.AppointmentRequest;
 import com.lamnd.medikart.entity.Appointment;
 import com.lamnd.medikart.service.AppointmentService;
 import jakarta.validation.Valid;

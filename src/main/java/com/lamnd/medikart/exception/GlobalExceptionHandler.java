@@ -1,6 +1,6 @@
 package com.lamnd.medikart.exception;
 
-import com.lamnd.medikart.dto.ApiResponse;
+import com.lamnd.medikart.dto.response.ApiResponse;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;

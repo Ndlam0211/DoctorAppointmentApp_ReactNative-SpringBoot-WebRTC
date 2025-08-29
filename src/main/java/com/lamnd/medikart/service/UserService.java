@@ -1,8 +1,8 @@
 package com.lamnd.medikart.service;
 
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
-import com.lamnd.medikart.dto.UpdateUserRequest;
-import com.lamnd.medikart.dto.CredentialDTO;
+import com.lamnd.medikart.dto.request.UpdateUserRequest;
+import com.lamnd.medikart.dto.request.CredentialDTO;
 import com.lamnd.medikart.entity.User;
 import com.lamnd.medikart.exception.BadRequestException;
 import com.lamnd.medikart.repository.UserRepository;
@@ -60,7 +60,6 @@ public class UserService {
         return user;
     }
 
-    // New methods for controller CRUD
     public List<User> getAllUsers() {
         return userRepository.findAll();
     }

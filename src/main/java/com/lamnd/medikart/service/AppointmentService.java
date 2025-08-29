@@ -1,6 +1,6 @@
 package com.lamnd.medikart.service;
 
-import com.lamnd.medikart.dto.AppointmentRequest;
+import com.lamnd.medikart.dto.request.AppointmentRequest;
 import com.lamnd.medikart.entity.Appointment;
 import com.lamnd.medikart.entity.Doctor;
 import com.lamnd.medikart.entity.Patient;

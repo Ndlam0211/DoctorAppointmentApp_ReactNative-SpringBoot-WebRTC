@@ -1,4 +1,4 @@
-package com.lamnd.medikart.dto;
+package com.lamnd.medikart.dto.request;
 
 import com.lamnd.medikart.entity.Appointment;
 import jakarta.validation.constraints.NotBlank;

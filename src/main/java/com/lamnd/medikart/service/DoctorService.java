@@ -1,8 +1,8 @@
 package com.lamnd.medikart.service;
 
-import com.lamnd.medikart.dto.CreateDoctorRequest;
+import com.lamnd.medikart.dto.request.CreateDoctorRequest;
 import com.lamnd.medikart.dto.DoctorDTO;
-import com.lamnd.medikart.dto.UpdateDoctorRequest;
+import com.lamnd.medikart.dto.request.UpdateDoctorRequest;
 import com.lamnd.medikart.entity.Doctor;
 import com.lamnd.medikart.entity.Speciality;
 import com.lamnd.medikart.entity.User;
